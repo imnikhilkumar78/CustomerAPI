@@ -49,6 +49,18 @@ namespace CustomerAPI.Controllers
             return BadRequest("Not able to Register");
         }
 
+        [Route("Update")]
+        [HttpPost]
+        public ActionResult<CustomerDTO> Update([FromBody] CustomerDTO customer)
+        {
+            var CustomerDTO = _service.Update(customer);
+            if (CustomerDTO != null)
+                return Ok(CustomerDTO);
+            return BadRequest("Not Working");
+
+        }
+
+
         [Route("Login")]
         [HttpPost]
 

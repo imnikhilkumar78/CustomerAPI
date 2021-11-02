@@ -61,6 +61,37 @@ namespace CustomerAPI.Services
             return null;
         }
 
+        public CustomerDTO Update(CustomerDTO customer)
+        {
+            try
+            {
+                using var hmac = new HMACSHA512();
+                foreach (var item in _context.Customers)
+                {
+                    if (item.CustomerId==customer.CustomerId)
+                    {
+
+                        item.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(customer.Password));
+                        item.PasswordSalt = hmac.Key;
+                        item.Name = customer.Name;
+                        item.Address = customer.Address;
+                        item.Phone = customer.Phone;
+                        item.Email_Id = customer.Email_Id;
+                        item.PAN = customer.PAN;
+                        item.Aadhar = customer.Aadhar;
+                        item.DOB = customer.DOB;
+                    }
+                }
+                _context.SaveChanges();
+                return customer;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return null;
+        }
+
         public CustomerDTO Login(CustomerDTO customerDTO)
         {
             try
